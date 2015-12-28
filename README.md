@@ -24,7 +24,7 @@ this project need NodeJS websocket .
 
 <h3> about node.js file  </h3>
 
-this file have an important array ( <code>_sockets[]</code> ) that contains socket connections .
+this file have an important array ( <code>_sockets[]</code> ) that contains socket connections .<br/>
 <code>admin_auth</code> is also an important array too . we store admins user / pass in this array . ( key is username and value is password )
 <h3>sockets</h3>
 <table>
@@ -52,11 +52,11 @@ this file have an important array ( <code>_sockets[]</code> ) that contains sock
 
 <h3> Commands </h3>
 
-users and admins can use /HELP and /USERS commands .
-<code>/HELP</code> shows list of available commands . 
-<code>/USERS shows</code> list of users ( with their id ) .
-admins can also use /KICK [id] command .
-<code>/KICK [id]</code> will kick id out ! 
+users and admins can use /HELP and /USERS commands . <br/>
+<code>/HELP</code> shows list of available commands . <br/>
+<code>/USERS shows</code> list of users ( with their id ) .<br/>
+admins can also use /KICK [id] command .<br/>
+<code>/KICK [id]</code> will kick id out ! <br/>
 
 <pre>
 SORRY FOR TERRIBLE ENGLISH . 
