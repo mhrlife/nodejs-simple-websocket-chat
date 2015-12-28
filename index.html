@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>chatroom tutorial</title>
+        <script src="jq.js"></script>
+        <script>
+
+            var _connection;
+
+            $(function(){
+                openSection("login");
+                window.WebSocket = window.WebSocket || window.MozWebSocket;
+                var connection = new WebSocket("ws://127.0.0.1:1337");
+                connection.onopen = function(){
+                    console.log("connected");
+                }
+                connection.onmessage = function(message){
+                    console.log(message.data);
+                    try{
+
+                        var tObject = JSON.parse(message.data);
+
+                        switch (tObject.type){
+                            case "adminAuth":{
+                                console.log(tObject.token);
+                                _connection.token = tObject.token;
+                                openSection("adminLogin");
+                            }break;
+
+                            case "welcome":{
+                                _connection.username = tObject.username;
+                                openSection("box");
+                            }break;
+
+                            case "s2a":{
+                                var p = $("<p>");
+                                $(p).css("color",tObject.fontColor).css("font",tObject.fontSize+"px tahoma");
+                                $(p).html(tObject.message);
+                                $("#boxChat").append(p);
+                            }break;
+
+                            case "adminWrongPW":{
+                                $("#adminWrongPW").slideDown(200);
+                            }break;
+                        }
+
+                    }catch (e){
+                        console.log("Error: "+ e.toString());
+                    }
+                }
+
+
+                _connection = connection;
+
+            });
+
+            function makeConnection(){
+                _connection.send(JSON.stringify({
+                    action:"login",
+                    message:$("#displayName").val()
+                }));
+            }
+
+            function adminPw(){
+                _connection.send(JSON.stringify({
+                    action:"adminPw",
+                    token:_connection.token,
+                    message:$("#adminPw").val()
+                }));
+            }
+
+            function openSection(id){
+                $(".section").hide();
+                $("#"+id).show();
+            }
+
+            function sendMessage(){
+                var message = $("#messageInput").val();
+                $("#messageInput").val("");
+                _connection.send(JSON.stringify({
+                    action:"msg",
+                    message:message
+                }));
+            }
+
+
+
+        </script>
+    </head>
+    <body>
+        <div id="login" class="section">
+            <fieldset>
+                <label>please enter your display name : </label>
+                <input type="text" id="displayName"/>
+                <hr>
+                <input type="button" value="connect to server" onclick="makeConnection();"/>
+            </fieldset>
+        </div>
+
+        <div id="adminLogin" class="section">
+            <fieldset>
+                <label>Hi admin :) your password please  : </label>
+                <input type="text" id="adminPw"/>
+                <hr>
+                <input type="button" value="welcome !" onclick="adminPw();"/>
+                <div id="adminWrongPW" style="color: tomato; font: 12px tahoma;padding: 12px;display: none;">
+                    password is wrong.
+                </div>
+            </fieldset>
+        </div>
+
+        <div id="box" class="section">
+            <div id="boxChat" style="background: #eee;width: 100%;height: 400px;padding: 20px;overflow: scroll"></div>
+            <input id="messageInput" type="text" style="width: 100%;height: 50px;background: #444;color: #eee"/>
+            <input id="messageButton" onclick="sendMessage();" type="button" value="SEND MESSAGE" style="width: 100%;height: 50px;background: #666;color: #eee;text-align: center"/>
+        </div>
+
+    </body>
+</html>
