@@ -53,7 +53,7 @@ this file have an important array ( <code>_sockets[]</code> ) that contains sock
 <h3> Commands </h3>
 
 users and admins can use /HELP and /USERS commands .
-<code>/HELP<code> shows list of available commands . 
+<code>/HELP</code> shows list of available commands . 
 <code>/USERS shows</code> list of users ( with their id ) .
 admins can also use /KICK [id] command .
 <code>/KICK [id]</code> will kick id out ! 
